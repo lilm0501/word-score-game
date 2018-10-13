@@ -150,7 +150,92 @@ function getAvailableLetter(){
 
 function findWordToUse(){
  //TODO Your job starts here.
-	alert("Your code needs to go here");	
+	var alphabet = []	
+	var a_p = []
+	var letter
+	for(var i=1;i<=7;i++){
+		var a_p_tmp = [];
+		var letter = document.getElementById("letter-"+i).innerHTML;
+		a_p_tmp.push(letter);
+		var point = parseInt(document.getElementById("points-"+i).innerHTML);
+		a_p_tmp.push(point);
+		a_p.push(a_p_tmp);
+	}
+	function sequence(a,b){
+         if (a[1]>b[1]) {
+             return 1;
+         }else if(a[1]<b[1]){
+             return -1
+         }else{
+             return 0;
+         }
+    }
+    a_p.sort(sequence);
+    for(var j=0;j<7;j++){
+    	alphabet.push(a_p[6-j][0])
+    }
+    console.log(alphabet)
+	function getGroup(data, index = 0, group = []) {
+		var need_apply = new Array();
+		need_apply.push(data[index]);
+		for(var i = 0; i < group.length; i++) {
+			need_apply.push(group[i] + data[index]);
+		}
+		group.push.apply(group, need_apply);
+		if(index + 1 >= data.length) return group;
+		else return getGroup(data, index + 1, group);
+	}
+	var letters_zh = getGroup(alphabet);
+	function permutation(arr){
+		if (arr.length == 1)
+			return arr;
+		else if (arr.length == 2)
+			return [[arr[0],arr[1]],[arr[1],arr[0]]];
+		else {
+			var temp = [];
+			for (var i = 0; i < arr.length; i++) {
+				var save = arr[i];
+				arr.splice(i, 1);
+				var res = permutation(arr);
+				arr.splice(i, 0, save);
+				for (var j = 0; j < res.length; j++) {
+					res[j].push(arr[i]);
+					temp.push(res[j]);
+				}
+			}
+			return temp;
+		}
+	}
+
+
+	var flag = false;
+	outer:
+	for(var k=0;k<letters_zh.length;k++){
+		var tmp = letters_zh[letters_zh.length-1-k];
+		var tmp1 = tmp.split("");
+		var letters_pl = permutation(tmp1);
+		inter:
+		for(var n=0;n<letters_pl.length;n++){
+			var words_tmp ="";
+			for(var m=0;m<letters_pl[n].length;m++){
+				words_tmp=words_tmp+letters_pl[n][m];
+			}
+			if(isThisAWord(words_tmp)){
+				if(haveLettersForWord(words_tmp)){
+					successfullyAddedWord(words_tmp);
+					flag = true;
+					break outer;
+				}
+				
+			}
+		}
+	}
+	if(flag){
+		alert("查找到一个单词!");
+	}else{
+		alert("没查找到单词!");
+	}
+
 }
 function humanFindWordToUse(){
 	
@@ -254,6 +339,7 @@ function clearClasses(){
 	for(ii=0; ii < YOUR_HAND.length; ii++){
 		$("#letter-" + (ii+1)).removeClass("letter-" + YOUR_HAND[ii].letter);
 		$("#points-" + (ii+1)).removeClass("points-" + YOUR_HAND[ii].pointsWhenLettersUsed);
+		console.log("hahahah")
 	}
 }
 
