@@ -172,43 +172,43 @@ function countScores(str) {
 
 function findWordToUse(){
 // 如果剩余字母不够7 则游戏结束
-	 if (YOUR_HAND.length < 7) {
-	 	alert('字母包剩余字母不够组成新单词，游戏结束！\n总得分：' + SCORE);
-	 	return;
-	 }
-	
-	 var letters = YOUR_HAND.map(function(item) {
-	 	return item.letter;
-	 }).join('');
-	
-	 // 枚举所有的组成方式
-	 var maybyArray = anagrams(letters);
-	
-	 // 算出每一种组合的得分
-	 var maybyArrayWithPoints = maybyArray.map(function(str) {
-	 	return {
-	 		str: str,
-	 		score: countScores((str))
-	 	}
-	 });
-	
-	 // 按照得分从大到小的顺序排序
-	 maybyArrayWithPoints.sort(function(a, b) {
-	 	return b.score - a.score;
-	 });
-	
-	// 从所有的可能中找到得分最高的
-	 var largeScoreItem = maybyArrayWithPoints.find(function(item) {
-	 	return isThisAWord(item.str);
-	 });
-	
-	 if (largeScoreItem) {
-	 	$( "#human-word-input").val(largeScoreItem.str);
-	 	humanFindWordToUse();
-	 } else {
-	 	console.log('未找到单词，继续下一个！');
-	 	retireHand();
-	 }
+ if (YOUR_HAND.length < 7) {
+ 	alert('字母包剩余字母不够组成新单词，游戏结束！\n总得分：' + SCORE);
+ 	return;
+ }
+
+ var letters = YOUR_HAND.map(function(item) {
+ 	return item.letter;
+ }).join('');
+
+ // 枚举所有的组成方式
+ var maybyArray = anagrams(letters);
+
+ // 算出每一种组合的得分
+ var maybyArrayWithPoints = maybyArray.map(function(str) {
+ 	return {
+ 		str: str,
+ 		score: countScores((str))
+ 	}
+ });
+
+ // 按照得分从大到小的顺序排序
+ maybyArrayWithPoints.sort(function(a, b) {
+ 	return b.score - a.score;
+ });
+
+// 从所有的可能中找到得分最高的
+ var largeScoreItem = maybyArrayWithPoints.find(function(item) {
+ 	return isThisAWord(item.str);
+ });
+
+ if (largeScoreItem) {
+ 	$( "#human-word-input").val(largeScoreItem.str);
+ 	humanFindWordToUse();
+ } else {
+ 	console.log('未找到单词，继续下一个！');
+ 	retireHand();
+ }
 }
 function humanFindWordToUse(){
 	
